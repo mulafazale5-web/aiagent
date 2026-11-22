@@ -1,3 +1,5 @@
+import { hasConfiguredGeminiApiKey } from '../../server/geminiHelpers.ts';
+
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'GET') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
@@ -9,6 +11,7 @@ export default async function handler(req: Request): Promise<Response> {
   return new Response(
     JSON.stringify({
       status: 'ok',
+      envConfigured: hasConfiguredGeminiApiKey(),
       capabilities: {
         liveWebsocket: false,
         voiceTurn: true,

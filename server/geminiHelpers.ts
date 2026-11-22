@@ -24,17 +24,37 @@ export interface IncomingHistoryItem {
   };
 }
 
-export function resolveGeminiApiKey(): string {
+const ENV_KEY_NAMES = [
+  'GEMINI_API_KEY',
+  'GOOGLE_API_KEY',
+  'GOOGLE_GENERATIVE_AI_API_KEY',
+] as const;
+
+export function hasConfiguredGeminiApiKey(): boolean {
+  return Boolean(findConfiguredApiKey());
+}
+
+function findConfiguredApiKey(): string {
   const netlifyEnv = (
     globalThis as {
       Netlify?: { env?: { get?: (key: string) => string | undefined } };
     }
   ).Netlify?.env;
-  const apiKey =
-    process.env.GEMINI_API_KEY || netlifyEnv?.get?.('GEMINI_API_KEY') || '';
+
+  for (const keyName of ENV_KEY_NAMES) {
+    const val = process.env[keyName] || netlifyEnv?.get?.(keyName);
+    if (val && val.trim().length > 0 && val !== 'MY_GEMINI_API_KEY') {
+      return val.trim();
+    }
+  }
+  return '';
+}
+
+export function resolveGeminiApiKey(): string {
+  const apiKey = findConfiguredApiKey();
   if (!apiKey) {
     throw new Error(
-      'GEMINI_API_KEY is not configured. Set it in Netlify Environment Variables or Settings > Secrets.'
+      'GEMINI_API_KEY is not configured. Add GEMINI_API_KEY in Netlify Site configuration > Environment variables (or Settings > Secrets) and redeploy.'
     );
   }
   return apiKey;

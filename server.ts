@@ -10,6 +10,7 @@ import {
   formatUpstreamError,
   generateChatReplyWithRetry,
   getGeminiClient,
+  hasConfiguredGeminiApiKey,
   openChatStreamWithRetry,
   synthesizeSpeechWav,
   transcribeAudioTurn,
@@ -25,6 +26,7 @@ async function startServer() {
   app.get('/api/health', (_req: Request, res: Response) => {
     res.json({
       status: 'ok',
+      envConfigured: hasConfiguredGeminiApiKey(),
       capabilities: {
         liveWebsocket: true,
         voiceTurn: true,
