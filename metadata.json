@@ -1,0 +1,10 @@
+{
+  "name": "Nova — AI Study & Work Partner",
+  "description": "An intelligent, encouraging AI study and work partner for students across real-time voice calls and text chat.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
