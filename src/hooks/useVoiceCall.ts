@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StudyFocusId, VoiceCallStatus } from '../types/study';
 import { NOVA_INITIAL_GREETING } from '../data/studyPresets';
+import { apiFetch } from '../utils/api';
 
 interface VoiceHistoryItem {
   role: 'user' | 'model';
@@ -361,7 +362,7 @@ export function useVoiceCall({
         }
 
         const { history } = callbacksRef.current.getConversationSummary();
-        const res = await fetch('/api/voice-turn', {
+        const res = await apiFetch('voice-turn', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -437,7 +438,7 @@ export function useVoiceCall({
         ? "I'm on the line with you now. Go ahead and tell me which step you'd like to tackle next."
         : NOVA_INITIAL_GREETING;
 
-      fetch('/api/tts', {
+      apiFetch('tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: greetingText }),
@@ -595,7 +596,7 @@ export function useVoiceCall({
     try {
       let supportsLiveWs = true;
       try {
-        const healthRes = await fetch('/api/health');
+        const healthRes = await apiFetch('health');
         if (healthRes.ok) {
           const health = (await healthRes.json()) as {
             capabilities?: { liveWebsocket?: boolean };

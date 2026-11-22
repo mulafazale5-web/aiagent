@@ -13,6 +13,7 @@ import {
   ChatMessage,
   VoiceCallStatus,
 } from '../types/study';
+import { apiFetch } from '../utils/api';
 
 interface ChatThreadProps {
   messages: ChatMessage[];
@@ -144,7 +145,7 @@ export function ChatThread({
     setLoadingTtsId(message.id);
 
     try {
-      const res = await fetch('/api/tts', {
+      const res = await apiFetch('tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: message.text }),

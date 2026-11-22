@@ -10,23 +10,37 @@
   from = "/api/health"
   to = "/.netlify/functions/health"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/api/chat"
   to = "/.netlify/functions/chat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/api/tts"
   to = "/.netlify/functions/tts"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/api/voice-turn"
   to = "/.netlify/functions/voice-turn"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Cache-Control = "no-store"

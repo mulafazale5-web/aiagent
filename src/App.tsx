@@ -5,6 +5,7 @@ import { TopBar } from './components/TopBar';
 import { VoiceStage } from './components/VoiceStage';
 import { NOVA_INITIAL_GREETING } from './data/studyPresets';
 import { useVoiceCall } from './hooks/useVoiceCall';
+import { apiFetch } from './utils/api';
 import {
   ChatImageAttachment,
   ChatMessage,
@@ -175,7 +176,7 @@ export default function App() {
             : undefined,
         }));
 
-        const response = await fetch('/api/chat', {
+        const response = await apiFetch('chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
